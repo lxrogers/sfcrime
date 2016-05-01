@@ -1,10 +1,122 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <script type="text/javascript" src="d3.v3.5.16.js"></script>
-    <!-- <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script> --> <!-- for final release -->
+    <style>
+      circle {
+         fill: #FF8533;
+         stroke-width: 0px;
+      }
+    </style>
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      var filterWithinCoords, filterIntersection;
+
+      window.onload = function () {
+
+        // Set up size
+        var width = 750,
+          height = width;
+
+        // Set up projection that map is using
+        var projection = d3.geo.mercator()
+          .center([-122.433701, 37.767683]) // San Francisco, roughly
+          .scale(225000)
+          .translate([width / 2, height / 2]);
+        // This is the mapping between <longitude, latitude> position to <x, y> pixel position on the map
+        // projection([lon, lat]) returns [x, y]
+        // projection.invert([x, y]) returns [lon, lat]
+
+        // Add an svg element to the DOM
+        var svg = d3.select(".sf-map").append("svg")
+          .attr("width", width)
+          .attr("height", height);
+
+        // Add svg map at correct size, assumes map is saved in a subdirectory called "data"
+        svg.append("image")
+          .attr("width", width)
+          .attr("height", height)
+          .attr("xlink:href", "data/sf-map.svg");
+
+        var locations = svg.append("svg:g")
+          .attr("class", "locations");
+
+        filterIntersection = function(home_radius, work_radius, color) {
+          var home_coords = [-122.458220811697, 37.7633123961354];
+          var work_coords = [-122.407257559322, 37.769769551921];
+
+          var home_radius_long = home_radius * 0.01886792452;
+          var work_radius_long = work_radius * 0.01886792452;
+          locations.filter(function(d) {
+            return (
+                ( Math.pow((d.Location[0] - home_coords[0]), 2) + Math.pow((d.Location[1] - home_coords[1]), 2) < Math.pow(home_radius_long, 2) )
+                &&
+                ( Math.pow((d.Location[0] - work_coords[0]), 2) + Math.pow((d.Location[1] - work_coords[1]), 2) < Math.pow(work_radius_long, 2) )
+              );
+          }).style("fill", color);
+        }
+
+        filterWithinCoords = function(center_x, center_y, radius_in_miles, color) {
+          // var lat_max =
+          // var lat_min =
+          // var long_max =
+          // var long_min =
+          var radius_in_longitude = radius_in_miles * 0.01886792452;
+          locations.filter(function(d) {
+            // console.log(d.Location[0], center_x, Math.pow((d.Location[0] - center_x), 2));
+            // console.log(d.Location[1], center_y, Math.pow((d.Location[1] - center_y), 2));
+            // console.log(radius_in_longitude, Math.pow(radius_in_longitude, 2));
+            return ( Math.pow((d.Location[0] - center_x), 2) + Math.pow((d.Location[1] - center_y), 2) < Math.pow(radius_in_longitude, 2) );
+          }).style("fill", color);
+        }
+
+        var incidents, locations;
+        d3.json("data/scpd_incidents.json", function(error, json) {
+
+          if (error) console.log(error);
+          incidents = json.data;
+          console.log('HOME:', incidents[0]);
+          console.log('WORK:', incidents[500]);
+
+          // for (incident of data.data) {
+          //   console.log(incident);
+          // }
+
+          locations = d3.select(".locations").selectAll('circle')
+            .data(incidents);
+
+          locations.enter().append("svg:circle")
+            .attr("cx", function(d) {
+              return projection([
+                d.Location[0],
+                d.Location[1]
+              ])[0];
+            })
+            .attr("cy", function(d) {
+              return projection([
+                d.Location[0],
+                d.Location[1]
+              ])[1];
+            })
+            .attr("id", function(d) {
+              return d.IncidentNumber;
+            })
+            .attr("r", 2);
+            //   .attr("transform", function(d) {
+            //     return "translate(" + projection([
+            //       d.Location[0],
+            //       d.Location[1]
+            //     ]) + ")";
+            //   });
+
+        });
+      }
+
+    </script>
   </head>
   <body>
-    <p>Hello Kyle!</p>
+    <button onclick="javascript: filterWithinCoords(-122.458220811697,37.7633123961354,2,'blue');">Filter Home</button>
+    <button onclick="javascript: filterWithinCoords(-122.407257559322,37.769769551921,2,'brown');">Filter Work</button>
+    <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button>
+    <div class="sf-map"></div>
   </body>
 </html>
