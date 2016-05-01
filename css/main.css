@@ -1,0 +1,25 @@
+/* main.css */
+
+#webapp {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+#controls {
+  border: 2px solid grey;
+  border-radius: 4px;
+  width: 500px;
+  height: 300px;
+  padding: 20px;
+}
+
+.pin {
+  cursor: pointer;
+}
+
+circle {
+   fill: #FF8533;
+   stroke-width: 0px;
+}

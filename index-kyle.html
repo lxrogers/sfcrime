@@ -2,6 +2,22 @@
 <html>
   <head>
     <style>
+      #webapp {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+      }
+      #controls {
+        border: 2px solid grey;
+        border-radius: 4px;
+        width: 500px;
+        height: 300px;
+        padding: 20px;
+      }
+      .pin {
+        cursor: pointer;
+      }
       circle {
          fill: #FF8533;
          stroke-width: 0px;
@@ -9,6 +25,9 @@
     </style>
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script type="text/javascript">
+
+      var home_coords = [-122.458220811697, 37.7633123961354];
+      var work_coords = [-122.407257559322, 37.769769551921];
       var filterWithinCoords, filterIntersection;
 
       window.onload = function () {
@@ -27,7 +46,7 @@
         // projection.invert([x, y]) returns [lon, lat]
 
         // Add an svg element to the DOM
-        var svg = d3.select(".sf-map").append("svg")
+        var svg = d3.select("#sf-map").append("svg")
           .attr("width", width)
           .attr("height", height);
 
@@ -42,19 +61,16 @@
               var cx = window.event.clientX;
               var cy = window.event.clientY;
               var mouse_xy_within_img = getXY(window.event, 'sf-map-image');
-              console.log(projection.invert(mouse_xy_within_img));
+              //mouse_xy_within_img = [d3.event.x, d3.event.y];
+              //console.log(projection.invert(mouse_xy_within_img));
               filterWithinCoords(projection.invert(mouse_xy_within_img)[0], projection.invert(mouse_xy_within_img)[1], 0.5, 'black');
             }
           });
-
 
         var locations = svg.append("svg:g")
           .attr("class", "locations");
 
         filterIntersection = function(home_radius, work_radius, color) {
-          var home_coords = [-122.458220811697, 37.7633123961354];
-          var work_coords = [-122.407257559322, 37.769769551921];
-
           var home_radius_long = home_radius * 0.01886792452;
           var work_radius_long = work_radius * 0.01886792452;
           locations.filter(function(d) {
@@ -67,15 +83,9 @@
         }
 
         filterWithinCoords = function(center_x, center_y, radius_in_miles, color) {
-          // var lat_max =
-          // var lat_min =
-          // var long_max =
-          // var long_min =
           var radius_in_longitude = radius_in_miles * 0.01886792452;
           locations.filter(function(d) {
-            // console.log(d.Location[0], center_x, Math.pow((d.Location[0] - center_x), 2));
-            // console.log(d.Location[1], center_y, Math.pow((d.Location[1] - center_y), 2));
-            // console.log(radius_in_longitude, Math.pow(radius_in_longitude, 2));
+            // the correct way to do this would involve haversines: https://en.wikipedia.org/wiki/Haversine_formula
             return ( Math.pow((d.Location[0] - center_x), 2) + Math.pow((d.Location[1] - center_y), 2) < Math.pow(radius_in_longitude, 2) );
           }).style("fill", color);
         }
@@ -85,16 +95,13 @@
 
           if (error) console.log(error);
           incidents = json.data;
-          console.log('HOME:', incidents[0]);
-          console.log('WORK:', incidents[500]);
-
-          // for (incident of data.data) {
-          //   console.log(incident);
-          // }
+          // console.log('HOME:', incidents[0]);
+          // console.log('WORK:', incidents[500]);
 
           locations = d3.select(".locations").selectAll('circle')
             .data(incidents);
 
+          // inspired by: http://eyalarubas.com/getting-started-with-d3js.html
           locations.enter().append("svg:circle")
             .attr("cx", function(d) {
               return projection([
@@ -112,14 +119,47 @@
               return d.IncidentNumber;
             })
             .attr("r", 2);
-            //   .attr("transform", function(d) {
-            //     return "translate(" + projection([
-            //       d.Location[0],
-            //       d.Location[1]
-            //     ]) + ")";
-            //   });
 
         });
+
+        var HOME_ICON_WIDTH = 20;
+        var HOME_ICON_HEIGHT = 20;
+        var home_drag = d3.behavior.drag();
+        home_drag.on("drag", function() {
+          d3.event.sourceEvent.stopPropagation(); // silence other listeners
+          d3.select(this).attr("x", d3.event.x - HOME_ICON_WIDTH/2);
+          d3.select(this).attr("y", d3.event.y - HOME_ICON_HEIGHT/2);
+          home_coords = projection.invert([d3.event.x - HOME_ICON_WIDTH/2, d3.event.y - HOME_ICON_HEIGHT/2]);
+        });
+        var home_icon = svg
+          .append("image")
+          .attr("xlink:href","icons/home.svg")
+          .attr("width", HOME_ICON_WIDTH)
+          .attr("height", HOME_ICON_HEIGHT)
+          .attr("x", projection(home_coords)[0] - HOME_ICON_WIDTH/2)
+          .attr("y", projection(home_coords)[1] - HOME_ICON_HEIGHT/2)
+          .attr("class", "pin")
+          .call(home_drag);
+
+        var WORK_ICON_WIDTH = 20;
+        var WORK_ICON_HEIGHT = 20;
+        var work_drag = d3.behavior.drag();
+        work_drag.on("drag", function() {
+          d3.event.sourceEvent.stopPropagation(); // silence other listeners
+          d3.select(this).attr("x", d3.event.x - WORK_ICON_WIDTH/2);
+          d3.select(this).attr("y", d3.event.y - WORK_ICON_HEIGHT/2);
+          work_coords = projection.invert([d3.event.x - WORK_ICON_WIDTH/2, d3.event.y - WORK_ICON_HEIGHT/2]);
+        });
+        var work_icon = svg
+          .append("image")
+          .attr("xlink:href","icons/work_filled.svg")
+          .attr("width", WORK_ICON_WIDTH)
+          .attr("height", WORK_ICON_HEIGHT)
+          .attr("x", projection(work_coords)[0] - WORK_ICON_WIDTH/2)
+          .attr("y", projection(work_coords)[1] - WORK_ICON_HEIGHT/2)
+          .attr("class", "pin")
+          .call(work_drag);
+
       }
 
       // Courtesy of http://stackoverflow.com/questions/4249648/jquery-get-mouse-position-within-an-element
@@ -148,9 +188,13 @@
     </script>
   </head>
   <body>
-    <button onclick="javascript: filterWithinCoords(-122.458220811697,37.7633123961354,2,'blue');">Filter Home</button>
-    <button onclick="javascript: filterWithinCoords(-122.407257559322,37.769769551921,2,'brown');">Filter Work</button>
-    <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button>
-    <div class="sf-map"></div>
+    <div id="webapp">
+      <div id="sf-map"></div>
+      <div id="controls">
+        <button onclick="javascript: filterWithinCoords(home_coords[0],home_coords[1],2,'blue');">Filter Home</button><br>
+        <button onclick="javascript: filterWithinCoords(work_coords[0],work_coords[1],2,'brown');">Filter Work</button><br>
+        <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button><br>
+      </div>
+    </div>
   </body>
 </html>
