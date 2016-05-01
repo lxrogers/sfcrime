@@ -19,23 +19,35 @@ var timesOfDayNames = {
 }
 
 function dayOfWeekHistogram(data) {
+	//init map
 	var counts = {};
 	for (var i = 0; i < daysOfWeek.length; i++) {
 		counts[daysOfWeek[i]] = 0;
 	}
-
+	//count all
 	for (var i = 0; i < data.length; i++) {
 		counts[data[i]['DayOfWeek']] += 1;
 	}
+	//normalize
+	var max = 0;
+	for (var i = 0; i < daysOfWeek.length; i++) {
+		if (counts[daysOfWeek[i]] > max) {
+			max = counts[daysOfWeek[i]];
+		}
+	}
+	for (var i = 0; i < daysOfWeek.length; i++) {
+		counts[daysOfWeek[i]] = counts[daysOfWeek[i]] / max;
+	}
 
+	//package and return
 	var counts_arr = [];
 	for (var i = 0; i < daysOfWeek.length; i++) {
 		counts_arr.push({
 			"name": daysOfWeek[i],
-			"count" : counts[daysOfWeek[i]]
+			"norm" : counts[daysOfWeek[i]],
+			"count" : Math.floor(counts[daysOfWeek[i]] * max)
 		})
 	}
-
 	return counts_arr;
 }
 
@@ -79,13 +91,16 @@ function createTOD() {
     	.text(function(d) { return d; });	
 }
 
-function createDOW() {
+
+
+function createDOW(incidents) {
+	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
 	d3.select("#DOW-hist")
 	.selectAll("div")
 		.data(dayOfWeekHist_data)
 	.enter().append("div")
-		.style("height", function(d) { return d.count / 30 + "px"; })
-		.style("margin-top", function(d) {return 50 - (d.count / 30) + "px"})
+		.style("height", function(d) { return d.norm * 10 + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
     	.text(function(d) { return d.count; });	
 
     d3.select("#DOW-slider")

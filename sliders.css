@@ -2,7 +2,7 @@ body {
 	width: 100%;
 }
 .chart {
-	height: 50px;
+	height: 10px;
 	padding-top: 5%;
 	padding-bottom: 5%;
 
@@ -10,7 +10,7 @@ body {
 
 .chart div {
 	font: 10px sans-serif;
-	background-color: gray;
+	background-color: steelblue;
 	text-align: right;
 	padding: 10px;
 	margin: 1px;

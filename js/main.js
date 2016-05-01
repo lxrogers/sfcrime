@@ -129,7 +129,7 @@ window.onload = function () {
       .attr("r", 2);
 
 
-      
+      createDOW(incidents);
 
   });
 
