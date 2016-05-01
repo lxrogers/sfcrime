@@ -130,14 +130,6 @@ window.onload = function () {
 
   });
 
-  var home_drag = d3.behavior.drag();
-  home_drag.on("drag", function() {
-    d3.event.sourceEvent.stopPropagation(); // silence other listeners
-    d3.select(this).attr("x", d3.event.x - HOME_ICON_WIDTH/2);
-    d3.select(this).attr("y", d3.event.y - HOME_ICON_HEIGHT/2);
-    home_coords = projection.invert([d3.event.x - HOME_ICON_WIDTH/2, d3.event.y - HOME_ICON_HEIGHT/2]);
-  });
-
   var home_icon = svg
     .append("image")
     .attr("xlink:href","icons/home.svg")
@@ -146,15 +138,12 @@ window.onload = function () {
     .attr("x", projection(home_coords)[0] - HOME_ICON_WIDTH/2)
     .attr("y", projection(home_coords)[1] - HOME_ICON_HEIGHT/2)
     .attr("class", "pin")
-    .call(home_drag);
-
-  var work_drag = d3.behavior.drag();
-  work_drag.on("drag", function() {
-    d3.event.sourceEvent.stopPropagation(); // silence other listeners
-    d3.select(this).attr("x", d3.event.x - WORK_ICON_WIDTH/2);
-    d3.select(this).attr("y", d3.event.y - WORK_ICON_HEIGHT/2);
-    work_coords = projection.invert([d3.event.x - WORK_ICON_WIDTH/2, d3.event.y - WORK_ICON_HEIGHT/2]);
-  });
+    .call(d3.behavior.drag().on("drag", function() {
+      d3.event.sourceEvent.stopPropagation(); // silence other listeners
+      d3.select(this).attr("x", d3.event.x - HOME_ICON_WIDTH/2);
+      d3.select(this).attr("y", d3.event.y - HOME_ICON_HEIGHT/2);
+      home_coords = projection.invert([d3.event.x - HOME_ICON_WIDTH/2, d3.event.y - HOME_ICON_HEIGHT/2]);
+    }));
 
   var work_icon = svg
     .append("image")
@@ -164,6 +153,11 @@ window.onload = function () {
     .attr("x", projection(work_coords)[0] - WORK_ICON_WIDTH/2)
     .attr("y", projection(work_coords)[1] - WORK_ICON_HEIGHT/2)
     .attr("class", "pin")
-    .call(work_drag);
+    .call(d3.behavior.drag().on("drag", function() {
+      d3.event.sourceEvent.stopPropagation(); // silence other listeners
+      d3.select(this).attr("x", d3.event.x - WORK_ICON_WIDTH/2);
+      d3.select(this).attr("y", d3.event.y - WORK_ICON_HEIGHT/2);
+      work_coords = projection.invert([d3.event.x - WORK_ICON_WIDTH/2, d3.event.y - WORK_ICON_HEIGHT/2]);
+    }));
 
 }
