@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+    <script src="js/main.js"></script>
+  </head>
+  <body>
+    <div id="webapp">
+      <div id="sf-map"></div>
+      <div id="controls">
+        <button onclick="javascript: filterWithinCoords(home_coords[0],home_coords[1],2,'blue');">Filter Home</button><br>
+        <button onclick="javascript: filterWithinCoords(work_coords[0],work_coords[1],2,'brown');">Filter Work</button><br>
+        <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button><br>
+      </div>
+    </div>
+  </body>
+</html>
