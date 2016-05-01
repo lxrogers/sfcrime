@@ -128,6 +128,9 @@ window.onload = function () {
       })
       .attr("r", 2);
 
+
+      
+
   });
 
   var home_icon = svg

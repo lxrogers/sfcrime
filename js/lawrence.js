@@ -67,27 +67,28 @@ function timeOfDayHistogram(data) {
 	return counts_arr;
 }
 
-var SCPDdata = loadData();
-var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
-var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
-
-d3.select("#TOD-hist")
+//var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
+//var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
+function createTOD() {
+	d3.select("#TOD-hist")
 	.selectAll("div")
 		.data(timeOfDayHist_data)
 	.enter().append("div")
 		.style("height", function(d) { return d / 30 + "px"; })
 		.style("margin-top", function(d) {return 50 - (d / 30) + "px"})
-    	.text(function(d) { return d; });
+    	.text(function(d) { return d; });	
+}
 
-d3.select("#DOW-hist")
+function createDOW() {
+	d3.select("#DOW-hist")
 	.selectAll("div")
 		.data(dayOfWeekHist_data)
 	.enter().append("div")
 		.style("height", function(d) { return d.count / 30 + "px"; })
 		.style("margin-top", function(d) {return 50 - (d.count / 30) + "px"})
-    	.text(function(d) { return d.count; });
+    	.text(function(d) { return d.count; });	
 
-d3.select("#DOW-slider")
+    d3.select("#DOW-slider")
 	.call(
 		d3.slider()
 			.scale(d3.scale.ordinal().domain(timesOfDay).rangePoints([0, 1], 0.5))
@@ -102,6 +103,10 @@ d3.select("#DOW-slider")
 			  d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
 			})
 	);
+}
+
+
+
 
 function isDaySelected(d) {
 	return 	$("input[name='" + d.name + "']").is(":checked");
@@ -118,9 +123,7 @@ function updateDOW() {
 		.style("background-color", "steelblue");
 }
 
-$('.DOW-checkbox').each(function() {
-	$(this).change(updateDOW)
-});
+
 
 
 
