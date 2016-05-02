@@ -1,6 +1,15 @@
 //var timesOfDay = [0,1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14,15,16,17,18,19,20,21,22,23]
 var timesOfDay = [0,3,7,11,15,19,23, 27, 31, 35, 39, 43, 47];
 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var selectedDaysOfWeek = {
+	"Sunday" : true,
+	"Monday" : true,
+	"Tuesday" : true,
+	"Wednesday" : true,
+	"Thursday" : true,
+	"Friday" : true,
+	"Saturday" : true
+}
 var timesOfDayNames = {
 	0: "Midnight",
 	3: "3am",
@@ -8,7 +17,7 @@ var timesOfDayNames = {
 	11: "11am",
 	15: "3pm",
 	19: "7pm",
-	23: "11pm", 
+	23: "11pm",
 	27: "3am",
 	31: "7am",
 	35: "11am",
@@ -88,7 +97,7 @@ function createTOD() {
 	.enter().append("div")
 		.style("height", function(d) { return d / 30 + "px"; })
 		.style("margin-top", function(d) {return 50 - (d / 30) + "px"})
-    	.text(function(d) { return d; });	
+    	.text(function(d) { return d; });
 }
 
 
@@ -101,13 +110,13 @@ function createDOW(incidents) {
 	.enter().append("div")
 		.style("height", function(d) { return d.norm * 10 + "px"; })
 		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
-    	.text(function(d) { return d.count; });	
+    	.text(function(d) { return d.count; });
 
     d3.select("#DOW-slider")
 	.call(
 		d3.slider()
 			.scale(d3.scale.ordinal().domain(timesOfDay).rangePoints([0, 1], 0.5))
-			.axis( 
+			.axis(
 				d3.svg.axis()
 					.tickFormat(function(d) { return timesOfDayNames[d]})
 			)
@@ -121,10 +130,14 @@ function createDOW(incidents) {
 }
 
 
+function updateSelectedDaysOfWeek() {
+	for (day of daysOfWeek) {
+		selectedDaysOfWeek[day] = isDaySelected(day) ? true : false;
+	}
+}
 
-
-function isDaySelected(d) {
-	return 	$("input[name='" + d.name + "']").is(":checked");
+function isDaySelected(day) {
+	return 	$("input[name='" + day + "']").is(":checked");
 }
 
 function updateDOW() {
@@ -134,8 +147,12 @@ function updateDOW() {
 
 	d3.select("#DOW-hist")
 		.selectAll("div")
-		.filter(function(d) {return isDaySelected(d);})
+		.filter(function(d) {return isDaySelected(d.name);})
 		.style("background-color", "steelblue");
+
+	updateSelectedDaysOfWeek();
+	updateDynamicFilter();
+
 }
 
 
