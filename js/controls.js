@@ -18,12 +18,13 @@ $("input[name='time']").change(function() {
   updateDynamicFilter();
 })
 
-
 $("input[name='violent']").prop("checked", true);
 $("input[name='violent']").change(function() {
 	violent = $(this).is(":checked");
+  updateDynamicFilter();
 })
 $("input[name='non-violent']").prop("checked", true);
 $("input[name='non-violent']").change(function() {
 	non_violent = $(this).is(":checked");
+  updateDynamicFilter();
 })

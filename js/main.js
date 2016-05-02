@@ -17,8 +17,8 @@ var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
 var filter_home, filter_work = false;
 var radius_leftover = [];
-var violent = true;
-var non_violent = false;
+var violent, non_violent = true;
+
 // global functions
 
 function updateDynamicFilter() {
@@ -32,6 +32,8 @@ function updateDynamicFilter() {
     if (filter_work) {
       if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
     }
+    if (!violent && d.IsViolent === "true") return false;
+    if (!non_violent && d.IsViolent === "false") return false;
     radius_leftover.push(d);
     if (!selectedDaysOfWeek[d.DayOfWeek]) return false;
     if (!isTimeSelected(d.TimeNumeric)) return false;
@@ -43,17 +45,6 @@ function updateDynamicFilter() {
 
   remakeDOW(radius_leftover);
   remakeTOD(radius_leftover);
-}
-
-function isViolentCrime(d) {
-  return d['Category'] == "ASSAULT" || d['Category']== "SEX OFFENSES, FORCIBLE";
-}
-
-function isNonViolentCrime(d) {
-  return !isViolentCrime(d);
-
-function toSum() {
-  console.log(this.size());
 }
 
 function filterWithinCoords(d, center_x, center_y) {
@@ -129,10 +120,19 @@ window.onload = function () {
       return (hours+minutes).toFixed(2);
     }
 
+    function isViolentCrime(category) {
+      return category == "ASSAULT"
+        || category == "SEX OFFENSES, FORCIBLE"
+        || category == "ARSON"
+        || category == "KIDNAPPING"
+        || category == "ROBBERY";
+    }
+
     var types_of_crimes = {};
 
     for (incident of incidents) {
       incident.TimeNumeric = stringTimeToDouble(incident.Time);
+      incident.IsViolent = isViolentCrime(incident.Category) ? "true" : "false";
       if (incident.Category in types_of_crimes) {
         types_of_crimes[incident.Category] += 1;
       } else {

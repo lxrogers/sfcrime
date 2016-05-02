@@ -32,6 +32,8 @@ var timesOfDayNames = {
 	24: "12am"
 }
 
+var BAR_HEIGHT_MULTIPLIER = 50;
+
 function dayOfWeekHistogram(data) {
 	//init map
 	var counts = {};
@@ -43,7 +45,7 @@ function dayOfWeekHistogram(data) {
 		counts[data[i]['DayOfWeek']] += 1;
 	}
 	//normalize
-	var max = 0;
+	var max = 1;
 	for (var i = 0; i < daysOfWeek.length; i++) {
 		if (counts[daysOfWeek[i]] > max) {
 			max = counts[daysOfWeek[i]];
@@ -81,7 +83,7 @@ function timeOfDayHistogram(data) {
 	}
 
 	//normalize
-	var max = 0;
+	var max = 1;
 	for (var hour = 0; hour < 24; hour += 2) {
 		if (counts[hour] > max) {
 			max = counts[hour]
@@ -139,8 +141,8 @@ function createTOD(incidents) {
 	.selectAll("div")
 		.data(timeOfDayHist_data)
 	.enter().append("div")
-		.style("height", function(d) { return d.norm * 10 + "px"; })
-		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+		.style("height", function(d) { return d.norm * BAR_HEIGHT_MULTIPLIER + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * BAR_HEIGHT_MULTIPLIER + "px"})
     	.text(function(d) { return d.count; });
 
 
@@ -182,8 +184,8 @@ function remakeTOD(incidents) {
 	d3.select("#TOD-hist")
 	.selectAll("div")
 		.data(timeOfDayHist_data)
-		.style("height", function(d) { return d.norm * 10 + "px"; })
-		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+		.style("height", function(d) { return d.norm * BAR_HEIGHT_MULTIPLIER + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * BAR_HEIGHT_MULTIPLIER + "px"})
     	.text(function(d) { return d.count; });
 }
 
@@ -193,8 +195,8 @@ function createDOW(incidents) {
 	.selectAll("div")
 		.data(dayOfWeekHist_data)
 	.enter().append("div")
-		.style("height", function(d) { return d.norm * 10 + "px"; })
-		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+		.style("height", function(d) { return d.norm * BAR_HEIGHT_MULTIPLIER + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * BAR_HEIGHT_MULTIPLIER + "px"})
     	.text(function(d) { return d.count; });
 }
 
@@ -204,9 +206,9 @@ function remakeDOW(incidents) {
 	d3.select("#DOW-hist")
 	.selectAll("div")
 		.data(dayOfWeekHist_data)
-		.style("height", function(d) { return d.norm * 10 + "px"; })
-		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
-    	.text(function(d) { return d.count; });	
+		.style("height", function(d) { return d.norm * BAR_HEIGHT_MULTIPLIER + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * BAR_HEIGHT_MULTIPLIER + "px"})
+    	.text(function(d) { return d.count; });
 }
 
 function updateSelectedDaysOfWeek() {
