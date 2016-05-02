@@ -29,6 +29,7 @@ function updateDynamicFilter() {
       if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
     }
     if (!selectedDaysOfWeek[d.DayOfWeek]) return false;
+    if (!isTimeSelected(d.TimeNumeric)) return false;
     return true;
   }).style("fill", SELECTED_COLOR);
 }
@@ -88,16 +89,6 @@ window.onload = function () {
     .attr("width", width)
     .attr("height", height)
     .attr("xlink:href", "data/sf-map.svg");
-    // .on({
-    //   'click': function() {
-    //     var cx = window.event.clientX;
-    //     var cy = window.event.clientY;
-    //     var mouse_xy_within_img = getXY(window.event, 'sf-map-image');
-    //     //mouse_xy_within_img = [d3.event.x, d3.event.y];
-    //     //console.log(projection.invert(mouse_xy_within_img));
-    //     filterWithinCoords(projection.invert(mouse_xy_within_img)[0], projection.invert(mouse_xy_within_img)[1], 0.5, 'black');
-    //   }
-    // });
 
   svg.append("svg:g")
     .attr("class", "locations");
@@ -106,8 +97,19 @@ window.onload = function () {
 
     if (error) console.log(error);
     var incidents = json.data;
-    console.log('HOME:', incidents[0]);
+    // console.log('HOME:', incidents[0]);
     // console.log('WORK:', incidents[500]);
+
+    function stringTimeToDouble(time_str) {
+      var ts = time_str.split(":");
+      var hours = Number(ts[0]);
+      var minutes = Number(ts[1])/60.0;
+      return (hours+minutes).toFixed(2);
+    }
+
+    for (incident of incidents) {
+      incident.TimeNumeric = stringTimeToDouble(incident.Time);
+    }
 
     locations = d3.select(".locations").selectAll('circle')
       .data(incidents);

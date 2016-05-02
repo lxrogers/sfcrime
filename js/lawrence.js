@@ -101,7 +101,6 @@ function timeOfDayHistogram(data) {
 			}
 		)
 	}
-	console.log(counts_arr)
 	return counts_arr;
 }
 
@@ -112,12 +111,11 @@ var include = true;
 
 function isTimeSelected(t) {
 	if (include) {
-		return t >= selectedTimes[0]  && t <= selectedTimes[1]	
+		return t >= selectedTimes[0] && t <= selectedTimes[1];
 	}
 	else {
-		return t < selectedTimes[0]  || t > selectedTimes[1]
+		return t < selectedTimes[0] || t > selectedTimes[1];
 	}
-	
 }
 
 function createRadiusSlider() {
@@ -160,8 +158,8 @@ function createTOD(incidents) {
 			  d3.select('#hourmin').text(timesOfDayNames[value[ 0 ]]);
 			  d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
 			  selectedTimes = value;
-			  console.log(selectedTimes);
 			  updateTOD();
+			  updateDynamicFilter();
 			})
 	);
 
