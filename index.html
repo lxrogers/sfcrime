@@ -15,9 +15,10 @@
     <div id="webapp">
       <div id="sf-map"></div>
       <div id="controls">
-        <button onclick="javascript: filterWithinCoords(home_coords[0],home_coords[1],2,'blue');">Filter Home</button><br>
-        <button onclick="javascript: filterWithinCoords(work_coords[0],work_coords[1],2,'brown');">Filter Work</button><br>
-        <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button><br>
+        <div id="location-checkboxes">
+          <input id="home-checkbox" class="location-checkbox" type="checkbox" name="Home" value="true" /> Filter to <span class="radius-text">radius</span> around HOME location?<br>
+          <input id="work-checkbox" class="location-checkbox" type="checkbox" name="Work" value="true" /> Filter to <span class="radius-text">radius</span> around WORK location?<br>
+        </div>
         <div class="chart" id="DOW-hist"></div>
         <div id="DOW-checkboxes">
           <input id="Sunday-checkbox" class="DOW-checkbox" type="checkbox" name="Sunday" value="Sunday" /> S

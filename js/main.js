@@ -18,9 +18,10 @@ var filter_home, filter_work = false;
 
 // global functions
 
-function dynamicFilter() {
+function updateDynamicFilter() {
   locations.style("fill", UNSELECTED_COLOR);
   locations.filter(function(d) {
+    if (!filter_home && !filter_work) return false; // no filters so nothing is selected
     if (filter_home) {
       if (!filterWithinCoords(d, home_coords[0], home_coords[1])) return false;
     }
