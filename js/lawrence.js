@@ -167,6 +167,16 @@ function createTOD(incidents) {
 	updateTOD();
 }
 
+function remakeTOD(incidents) {
+	var timeOfDayHist_data = timeOfDayHistogram(incidents);
+	d3.select("#TOD-hist")
+	.selectAll("div")
+		.data(timeOfDayHist_data)
+		.style("height", function(d) { return d.norm * 10 + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+    	.text(function(d) { return d.count; });
+}
+
 function createDOW(incidents) {
 	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
 	d3.select("#DOW-hist")
@@ -176,6 +186,17 @@ function createDOW(incidents) {
 		.style("height", function(d) { return d.norm * 10 + "px"; })
 		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
     	.text(function(d) { return d.count; });
+}
+
+function remakeDOW(incidents) {
+	console.log("remaking histogram")
+	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
+	d3.select("#DOW-hist")
+	.selectAll("div")
+		.data(dayOfWeekHist_data)
+		.style("height", function(d) { return d.norm * 10 + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+    	.text(function(d) { return d.count; });	
 }
 
 function updateSelectedDaysOfWeek() {

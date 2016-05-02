@@ -16,6 +16,7 @@ body {
 	margin: 1px;
 	color: white;
 	float: left;
+	width: 20px;
 }
 
 .d3-slider-axis-bottom {
@@ -38,9 +39,9 @@ body {
 }
 
 #TOD-hist div {
-	width: 3%
+	width: 18px;
 }
 
 .DOW-checkbox {
-	margin:;
+	
 }

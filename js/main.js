@@ -15,11 +15,12 @@ var radius = 2.0; // in miles
 var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
 var filter_home, filter_work = false;
-
+var radius_leftover = [];
 // global functions
 
 function updateDynamicFilter() {
   locations.style("fill", UNSELECTED_COLOR);
+  radius_leftover = [];
   locations.filter(function(d) {
     // if (!filter_home && !filter_work) return false; // no filters so nothing is selected
     if (filter_home) {
@@ -28,10 +29,14 @@ function updateDynamicFilter() {
     if (filter_work) {
       if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
     }
+    radius_leftover.push(d);
     if (!selectedDaysOfWeek[d.DayOfWeek]) return false;
     if (!isTimeSelected(d.TimeNumeric)) return false;
     return true;
   }).style("fill", SELECTED_COLOR);
+
+  remakeDOW(radius_leftover);
+  remakeTOD(radius_leftover);
 }
 
 function filterWithinCoords(d, center_x, center_y) {
