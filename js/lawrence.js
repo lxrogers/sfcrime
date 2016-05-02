@@ -56,24 +56,44 @@ function extractHour(time) {
 }
 
 function timeOfDayHistogram(data) {
-	//create empty map
+	//init map
 	var counts = {};
 	for (var hour = 0; hour < 24; hour += 4) {
 		counts[hour] = 0;
 	}
-
+	//count all
 	for (var i = 0; i < data.length ; i++) {
 		counts[extractHour(data[i]["Time"])] += 1;
 	}
 
-	var counts_arr = [];
+	//normalize
+	var max = 0;
 	for (var hour = 0; hour < 24; hour += 4) {
-		console.log(hour)
-		counts_arr.push(counts[hour])
+		if (counts[hour] > max) {
+			max = counts[hour]
+		}
 	}
 	for (var hour = 0; hour < 24; hour += 4) {
-		console.log(hour)
-		counts_arr.push(counts[hour])
+		counts[hour] = counts[hour] / max;
+	}
+
+	//package and return
+	var counts_arr = [];
+	for (var hour = 0; hour < 24; hour += 4) {
+		counts_arr.push({
+			"norm": counts[hour], 
+			"count": Math.floor(counts[hour] * max),
+			"name" : hour
+			}
+		)
+	}
+	for (var hour = 0; hour < 24; hour += 4) {
+		counts_arr.push({
+			"norm": counts[hour], 
+			"count": Math.floor(counts[hour] * max),
+			"name" : hour
+			}
+		)
 	}
 	console.log(counts_arr)
 	return counts_arr;
@@ -81,29 +101,18 @@ function timeOfDayHistogram(data) {
 
 //var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
 //var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
-function createTOD() {
+function createTOD(incidents) {
+	var timeOfDayHist_data = timeOfDayHistogram(incidents);
 	d3.select("#TOD-hist")
 	.selectAll("div")
 		.data(timeOfDayHist_data)
-	.enter().append("div")
-		.style("height", function(d) { return d / 30 + "px"; })
-		.style("margin-top", function(d) {return 50 - (d / 30) + "px"})
-    	.text(function(d) { return d; });	
-}
-
-
-
-function createDOW(incidents) {
-	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
-	d3.select("#DOW-hist")
-	.selectAll("div")
-		.data(dayOfWeekHist_data)
 	.enter().append("div")
 		.style("height", function(d) { return d.norm * 10 + "px"; })
 		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
     	.text(function(d) { return d.count; });	
 
-    d3.select("#DOW-slider")
+
+    d3.select("#TOD-slider")
 	.call(
 		d3.slider()
 			.scale(d3.scale.ordinal().domain(timesOfDay).rangePoints([0, 1], 0.5))
@@ -120,8 +129,16 @@ function createDOW(incidents) {
 	);
 }
 
-
-
+function createDOW(incidents) {
+	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
+	d3.select("#DOW-hist")
+	.selectAll("div")
+		.data(dayOfWeekHist_data)
+	.enter().append("div")
+		.style("height", function(d) { return d.norm * 10 + "px"; })
+		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
+    	.text(function(d) { return d.count; });	
+}
 
 function isDaySelected(d) {
 	return 	$("input[name='" + d.name + "']").is(":checked");
@@ -137,50 +154,3 @@ function updateDOW() {
 		.filter(function(d) {return isDaySelected(d);})
 		.style("background-color", "steelblue");
 }
-
-
-
-
-
-			/*
-// Set up size
-var width = 750,
-	height = width
-;
-// Set up projection that map is using
-var projection = d3.geo.mercator()
-	.center([-122.433701, 37.767683]) // San Francisco, roughly
-	.scale(225000)
-	.translate([width / 2, height / 2]);
-// This is the mapping between <longitude, latitude> position to <x, y> pixel position on the map
-// projection([lon, lat]) returns [x, y]
-// projection.invert([x, y]) returns [lon, lat]
-
-// Add an svg element to the DOM
-var svg = d3.select("#projector").append("svg")
-	.attr("width", width)
-	.attr("height", height);
-
-// Add svg map at correct size, assumes map is saved in a subdirectory called "data"
-svg.append("image")
-	  .attr("width", width)
-	  .attr("height", height)
-	  .attr("xlink:href", "data/sf-map.svg");
-
-svg.selectAll("circle")
-    .data(SCPDdata.data)
-  .enter().append("circle")
-    .attr("cx", function(datum) {return projection([datum['Location'][0], datum['Location'][1]])[0];})
-    .attr("cy", function(datum) {return projection([datum['Location'][0], datum['Location'][1]])[1];})
-    .attr("r", function(datum) {return 2;})
-    .style("fill", "steelblue")
-    .style("stroke", "steelblue" );
-
-
-svg.selectAll("circle")
-	.filter
-//var points = svg.append("circle").attr("cx", 30)
-//								.attr("cy", 30)
-//								.attr("r", 20);
-
-*/

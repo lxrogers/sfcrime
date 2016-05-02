@@ -4,9 +4,9 @@
 	<meta http-equiv="content-type" content="text/html; charset=UTF8">
     <script type="text/javascript" src="d3.v3.5.16.js"></script>
     <script src="js/d3.slider.js"></script>
-    <link rel="stylesheet" href="d3.slider.css" />
-    <link rel="stylesheet" href="sliders.css" />
     <script src="js/jquery-1.12.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/d3.slider.css" />
+
     <!-- <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script> --> <!-- for final release -->
   </head>
   <body>
@@ -15,13 +15,7 @@
    	<div class="chart" id="DOW-hist">
 		  
 		</div>
-			<input id="Sunday-checkbox" class="DOW-checkbox" type="checkbox" name="Sunday" value="Sunday" /> S
-      <input id="Monday-checkbox" class="DOW-checkbox" type="checkbox" name="Monday" value="Monday" /> M
-      <input id="Tuesday-checkbox" class="DOW-checkbox" type="checkbox" name="Tuesday" value="Tuesday" /> T
-      <input id="Wednesday-checkbox" class="DOW-checkbox" type="checkbox" name="Wednesday" value="Sunday" /> W
-      <input id="Thursday-checkbox" class="DOW-checkbox" type="checkbox" name="Thursday" value="Monday" /> T
-      <input id="Friday-checkbox" class="DOW-checkbox" type="checkbox" name="Friday" value="Tuesday" /> F
-      <input id="Saturday-checkbox" class="DOW-checkbox" type="checkbox" name="Saturday" value="Tuesday" /> S
+		
 
 		<div class="chart" id="TOD-hist">
 		  
@@ -38,4 +32,8 @@
 
   <script type="text/javascript" src="js/data.js"></script>
   <script type="text/javascript" src="js/lawrence.js"></script>
+  <script type="text/javascript" src="js/data.js"></script>
+  <script>
+  createTOD(loadData().data)
+  </script>
 </html>

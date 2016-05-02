@@ -19,17 +19,17 @@ body {
   
 }
 
-#DOW-slider {
-	width: 30%;
+#TOD-slider {
+	width: 100%;
 }
 
 #TOD-hist {
-	width: 30%;
+	width: 100%;
 	padding-bottom: 30px;
 }
 
 #TOD-hist div {
-	width: 4%
+	width: 3%
 }
 
 .DOW-checkbox {

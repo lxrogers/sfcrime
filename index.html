@@ -2,7 +2,8 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <link rel="stylesheet" type="text/css" href="sliders.css" />
+    <link rel="stylesheet" type="text/css" href="css/d3.slider.css" />
+    <link rel="stylesheet" type="text/css" href="css/sliders.css" />
 
     <script src="https://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="js/jquery-1.12.3.min.js"></script>
@@ -18,6 +19,7 @@
         <button onclick="javascript: filterWithinCoords(home_coords[0],home_coords[1],2,'blue');">Filter Home</button><br>
         <button onclick="javascript: filterWithinCoords(work_coords[0],work_coords[1],2,'brown');">Filter Work</button><br>
         <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button><br>
+        
         <div class="chart" id="DOW-hist"></div>
         <div id="DOW-checkboxes">
           <input id="Sunday-checkbox" class="DOW-checkbox" type="checkbox" name="Sunday" value="Sunday" /> S
@@ -28,6 +30,11 @@
           <input id="Friday-checkbox" class="DOW-checkbox" type="checkbox" name="Friday" value="Tuesday" /> F
           <input id="Saturday-checkbox" class="DOW-checkbox" type="checkbox" name="Saturday" value="Tuesday" /> S
         </div>
+        
+        <div class="chart" id="TOD-hist"></div>
+        <div id="TOD-slider" class="d3-slider d3-slider-horizontal"></div><br/>
+        Time Selected: <span id ="hourmin">11am </span> to <span id ="hourmax">11am </span>
+
       </div>
     </div>
 
