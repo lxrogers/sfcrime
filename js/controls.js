@@ -17,3 +17,13 @@ $("input[name='time']").change(function() {
 	updateTimeText(selectedTimes);
   updateDynamicFilter();
 })
+
+
+$("input[name='violent']").prop("checked", true);
+$("input[name='violent']").change(function() {
+	violent = $(this).is(":checked");
+})
+$("input[name='non-violent']").prop("checked", true);
+$("input[name='non-violent']").change(function() {
+	non_violent = $(this).is(":checked");
+})
