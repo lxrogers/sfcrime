@@ -24,8 +24,8 @@ var timesOfDayNames = {
 	40: "3pm",
 	44: "7pm",
 	48: "11pm"
-
 }
+var selectedTimes = []; // e.g. [12, 36]
 
 function dayOfWeekHistogram(data) {
 	//init map
@@ -104,13 +104,8 @@ function timeOfDayHistogram(data) {
 			}
 		)
 	}
-	console.log(counts_arr)
 	return counts_arr;
 }
-
-//var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
-//var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
-var selectedTimes = [];
 
 function isTimeSelected(t) {
 	return t >= selectedTimes[0]  && t <= selectedTimes[1]
@@ -141,6 +136,7 @@ function createTOD(incidents) {
 			  d3.select('#hourmin').text(timesOfDayNames[value[ 0 ]]);
 			  d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
 			  selectedTimes = value;
+			  console.log(selectedTimes);
 			  updateTOD();
 			})
 	);

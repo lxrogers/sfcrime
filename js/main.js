@@ -106,7 +106,7 @@ window.onload = function () {
 
     if (error) console.log(error);
     var incidents = json.data;
-    // console.log('HOME:', incidents[0]);
+    console.log('HOME:', incidents[0]);
     // console.log('WORK:', incidents[500]);
 
     locations = d3.select(".locations").selectAll('circle')
