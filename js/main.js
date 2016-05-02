@@ -6,8 +6,8 @@ var HOME_ICON_HEIGHT = 20;
 var WORK_ICON_WIDTH = 20;
 var WORK_ICON_HEIGHT = 20;
 var LONGITUDINAL_DEGREES_PER_MILE = 0.01886792452;
-var SELECTED_COLOR = "brown";
-var UNSELECTED_COLOR = "#FF8533";
+var SELECTED_COLOR = "steelblue";
+var UNSELECTED_COLOR = "lightgrey"; // #FF8533
 
 // global vars
 var locations;
@@ -21,13 +21,14 @@ var filter_home, filter_work = false;
 function updateDynamicFilter() {
   locations.style("fill", UNSELECTED_COLOR);
   locations.filter(function(d) {
-    if (!filter_home && !filter_work) return false; // no filters so nothing is selected
+    // if (!filter_home && !filter_work) return false; // no filters so nothing is selected
     if (filter_home) {
       if (!filterWithinCoords(d, home_coords[0], home_coords[1])) return false;
     }
     if (filter_work) {
       if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
     }
+    if (!selectedDaysOfWeek[d.DayOfWeek]) return false;
     return true;
   }).style("fill", SELECTED_COLOR);
 }
@@ -128,7 +129,8 @@ window.onload = function () {
       .attr("id", function(d) {
         return d.IncidentNumber;
       })
-      .attr("r", 2);
+      .attr("r", 2)
+      .style("fill", UNSELECTED_COLOR);
 
 
       createDOW(incidents);
@@ -150,6 +152,7 @@ window.onload = function () {
       d3.select(this).attr("x", d3.event.x - HOME_ICON_WIDTH/2);
       d3.select(this).attr("y", d3.event.y - HOME_ICON_HEIGHT/2);
       home_coords = projection.invert([d3.event.x - HOME_ICON_WIDTH/2, d3.event.y - HOME_ICON_HEIGHT/2]);
+      updateDynamicFilter();
     }));
 
   var work_icon = svg
@@ -165,6 +168,7 @@ window.onload = function () {
       d3.select(this).attr("x", d3.event.x - WORK_ICON_WIDTH/2);
       d3.select(this).attr("y", d3.event.y - WORK_ICON_HEIGHT/2);
       work_coords = projection.invert([d3.event.x - WORK_ICON_WIDTH/2, d3.event.y - WORK_ICON_HEIGHT/2]);
+      updateDynamicFilter();
     }));
 
 }

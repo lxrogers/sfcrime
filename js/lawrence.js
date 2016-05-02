@@ -1,6 +1,15 @@
 //var timesOfDay = [0,1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14,15,16,17,18,19,20,21,22,23]
 var timesOfDay = [0,4,8,12,16,20,24, 28, 32, 36, 40, 44, 48];
 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+var selectedDaysOfWeek = {
+	"Sunday" : true,
+	"Monday" : true,
+	"Tuesday" : true,
+	"Wednesday" : true,
+	"Thursday" : true,
+	"Friday" : true,
+	"Saturday" : true
+}
 var timesOfDayNames = {
 	0: "Midnight",
 	4: "3am",
@@ -8,7 +17,7 @@ var timesOfDayNames = {
 	12: "11am",
 	16: "3pm",
 	20: "7pm",
-	24: "11pm", 
+	24: "11pm",
 	28: "3am",
 	32: "7am",
 	36: "11am",
@@ -81,7 +90,7 @@ function timeOfDayHistogram(data) {
 	var counts_arr = [];
 	for (var hour = 0; hour < 24; hour += 4) {
 		counts_arr.push({
-			"norm": counts[hour], 
+			"norm": counts[hour],
 			"count": Math.floor(counts[hour] * max),
 			"name" : hour
 			}
@@ -89,7 +98,7 @@ function timeOfDayHistogram(data) {
 	}
 	for (var hour = 0; hour < 24; hour += 4) {
 		counts_arr.push({
-			"norm": counts[hour], 
+			"norm": counts[hour],
 			"count": Math.floor(counts[hour] * max),
 			"name" : hour + 24
 			}
@@ -128,14 +137,14 @@ function createTOD(incidents) {
 	.enter().append("div")
 		.style("height", function(d) { return d.norm * 10 + "px"; })
 		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
-    	.text(function(d) { return d.count; });	
+    	.text(function(d) { return d.count; });
 
 
     d3.select("#TOD-slider")
 	.call(
 		d3.slider()
 			.scale(d3.scale.ordinal().domain(timesOfDay).rangePoints([0, 1], 0.5))
-			.axis( 
+			.axis(
 				d3.svg.axis()
 					.tickFormat(function(d) { return timesOfDayNames[d]})
 			)
@@ -161,11 +170,17 @@ function createDOW(incidents) {
 	.enter().append("div")
 		.style("height", function(d) { return d.norm * 10 + "px"; })
 		.style("margin-top", function(d) {return (1 - d.norm) * 10 + "px"})
-    	.text(function(d) { return d.count; });	
+    	.text(function(d) { return d.count; });
 }
 
-function isDaySelected(d) {
-	return 	$("input[name='" + d.name + "']").is(":checked");
+function updateSelectedDaysOfWeek() {
+  for (day of daysOfWeek) {
+    selectedDaysOfWeek[day] = isDaySelected(day) ? true : false;
+  }
+}
+
+function isDaySelected(day) {
+  return  $("input[name='" + day + "']").is(":checked");
 }
 
 function updateTOD() {
@@ -186,6 +201,10 @@ function updateDOW() {
 
 	d3.select("#DOW-hist")
 		.selectAll("div")
-		.filter(function(d) {return isDaySelected(d);})
+		.filter(function(d) {return isDaySelected(d.name);})
 		.style("background-color", "steelblue");
+
+	updateSelectedDaysOfWeek();
+	updateDynamicFilter();
+
 }
