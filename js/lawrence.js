@@ -1,20 +1,20 @@
 //var timesOfDay = [0,1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14,15,16,17,18,19,20,21,22,23]
-var timesOfDay = [0,3,7,11,15,19,23, 27, 31, 35, 39, 43, 47];
+var timesOfDay = [0,4,8,12,16,20,24, 28, 32, 36, 40, 44, 48];
 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var timesOfDayNames = {
 	0: "Midnight",
-	3: "3am",
-	7: "7am",
-	11: "11am",
-	15: "3pm",
-	19: "7pm",
-	23: "11pm", 
-	27: "3am",
-	31: "7am",
-	35: "11am",
-	39: "3pm",
-	43: "7pm",
-	47: "11pm"
+	4: "3am",
+	8: "7am",
+	12: "11am",
+	16: "3pm",
+	20: "7pm",
+	24: "11pm", 
+	28: "3am",
+	32: "7am",
+	36: "11am",
+	40: "3pm",
+	44: "7pm",
+	48: "11pm"
 
 }
 
@@ -91,7 +91,7 @@ function timeOfDayHistogram(data) {
 		counts_arr.push({
 			"norm": counts[hour], 
 			"count": Math.floor(counts[hour] * max),
-			"name" : hour
+			"name" : hour + 24
 			}
 		)
 	}
@@ -101,6 +101,12 @@ function timeOfDayHistogram(data) {
 
 //var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
 //var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
+var selectedTimes = [];
+
+function isTimeSelected(t) {
+	return t >= selectedTimes[0]  && t <= selectedTimes[1]
+}
+
 function createTOD(incidents) {
 	var timeOfDayHist_data = timeOfDayHistogram(incidents);
 	d3.select("#TOD-hist")
@@ -121,12 +127,17 @@ function createTOD(incidents) {
 					.tickFormat(function(d) { return timesOfDayNames[d]})
 			)
 			.snap(true)
-			.value([11, 35])
+			.value([12, 36])
 			.on("slide", function(evt, value) {
 			  d3.select('#hourmin').text(timesOfDayNames[value[ 0 ]]);
 			  d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
+			  selectedTimes = value;
+			  updateTOD();
 			})
 	);
+
+	selectedTimes = [12, 36];
+	updateTOD();
 }
 
 function createDOW(incidents) {
@@ -142,6 +153,17 @@ function createDOW(incidents) {
 
 function isDaySelected(d) {
 	return 	$("input[name='" + d.name + "']").is(":checked");
+}
+
+function updateTOD() {
+	d3.select("#TOD-hist")
+		.selectAll("div")
+		.style("background-color", "grey");
+
+	d3.select("#TOD-hist")
+		.selectAll("div")
+		.filter(function(t) {return isTimeSelected(t.name);})
+		.style("background-color", "steelblue");
 }
 
 function updateDOW() {
