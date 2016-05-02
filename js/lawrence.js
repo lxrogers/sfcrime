@@ -155,8 +155,7 @@ function createTOD(incidents) {
 			.snap(true)
 			.value([0, 24])
 			.on("slide", function(evt, value) {
-			  d3.select('#hourmin').text(timesOfDayNames[value[ 0 ]]);
-			  d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
+			  updateTimeText(value);
 			  selectedTimes = value;
 			  updateTOD();
 			  updateDynamicFilter();
@@ -165,6 +164,17 @@ function createTOD(incidents) {
 
 	selectedTimes = [0, 24];
 	updateTOD();
+}
+
+function updateTimeText(value) {
+	if (include) {
+		d3.select('#hourmin').text(timesOfDayNames[value[ 0 ]]);
+		d3.select('#hourmax').text(timesOfDayNames[value[ 1 ]]);
+	}
+	else {
+		 d3.select('#hourmin').text(timesOfDayNames[value[ 1 ]]);
+		 d3.select('#hourmax').text(timesOfDayNames[value[ 0 ]]);
+	}
 }
 
 function remakeTOD(incidents) {

@@ -14,5 +14,6 @@ $('.location-checkbox').each(function() {
 $("input[name='time']").change(function() {
 	include = (this.value == "include");
 	updateTOD();
+	updateTimeText(selectedTimes);
   updateDynamicFilter();
 })
