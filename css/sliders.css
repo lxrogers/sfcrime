@@ -23,6 +23,11 @@ body {
 	width: 100%;
 }
 
+#radius-slider {
+	width: 100%;
+	margin-top: 20px;
+}
+
 #TOD-hist {
 	width: 100%;
 	padding-bottom: 30px;

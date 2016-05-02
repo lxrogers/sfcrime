@@ -111,6 +111,19 @@ function isTimeSelected(t) {
 	return t >= selectedTimes[0]  && t <= selectedTimes[1]
 }
 
+function createRadiusSlider() {
+	d3.select("#radius-slider")
+	.call(
+		d3.slider()
+			.scale(d3.scale.ordinal().domain([0,1,2,3,4,5]).rangePoints([0, 1], 0.5))
+			.axis(d3.svg.axis())
+			.value(1)
+			.on("slide", function(evt, value) {
+			  
+			})
+	);
+}
+
 function createTOD(incidents) {
 	var timeOfDayHist_data = timeOfDayHistogram(incidents);
 	d3.select("#TOD-hist")
