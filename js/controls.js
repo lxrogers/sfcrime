@@ -1,6 +1,6 @@
 $('.DOW-checkbox').each(function() {
-	$(this).change(updateDOW);
-	$(this).prop('checked', true);
+	$(this).change(updateDOW)
+	$(this).prop('checked', true)
 });
 
 $('.location-checkbox').each(function() {

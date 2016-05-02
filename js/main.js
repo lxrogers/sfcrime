@@ -134,6 +134,7 @@ window.onload = function () {
 
 
       createDOW(incidents);
+      createTOD(incidents);
 
   });
 
