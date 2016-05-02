@@ -6,32 +6,33 @@ var HOME_ICON_HEIGHT = 20;
 var WORK_ICON_WIDTH = 20;
 var WORK_ICON_HEIGHT = 20;
 var LONGITUDINAL_DEGREES_PER_MILE = 0.01886792452;
+var SELECTED_COLOR = "brown";
+var UNSELECTED_COLOR = "#FF8533";
 
 // global vars
 var locations;
+var radius = 2.0; // in miles
 var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
+var filter_home, filter_work = false;
 
 // global functions
 
-function filterWithinCoords(center_x, center_y, radius_in_miles, color) {
-  var radius_in_longitude = radius_in_miles * LONGITUDINAL_DEGREES_PER_MILE;
+function dynamicFilter(datum) {
+  locations.style("fill", UNSELECTED_COLOR);
   locations.filter(function(d) {
-    // the correct way to do this would involve haversines: https://en.wikipedia.org/wiki/Haversine_formula
-    return ( Math.pow((d.Location[0] - center_x), 2) + Math.pow((d.Location[1] - center_y), 2) < Math.pow(radius_in_longitude, 2) );
-  }).style("fill", color);
+    if (filter_home) {
+      if (!filterWithinCoords(d, home_coords[0], home_coords[1])) return false;
+    }
+    if (filter_work) {
+      if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
+    }
+    return true;
+  }).style("fill", SELECTED_COLOR);
 }
 
-function filterIntersection(home_radius, work_radius, color) {
-  var home_radius_long = home_radius * LONGITUDINAL_DEGREES_PER_MILE;
-  var work_radius_long = work_radius * LONGITUDINAL_DEGREES_PER_MILE;
-  locations.filter(function(d) {
-    return (
-        ( Math.pow((d.Location[0] - home_coords[0]), 2) + Math.pow((d.Location[1] - home_coords[1]), 2) < Math.pow(home_radius_long, 2) )
-        &&
-        ( Math.pow((d.Location[0] - work_coords[0]), 2) + Math.pow((d.Location[1] - work_coords[1]), 2) < Math.pow(work_radius_long, 2) )
-      );
-  }).style("fill", color);
+function filterWithinCoords(d, center_x, center_y) {
+  return ( Math.pow((d.Location[0] - center_x), 2) + Math.pow((d.Location[1] - center_y), 2) < Math.pow(radius * LONGITUDINAL_DEGREES_PER_MILE, 2) );
 }
 
 // Courtesy of http://stackoverflow.com/questions/4249648/jquery-get-mouse-position-within-an-element
@@ -84,17 +85,17 @@ window.onload = function () {
     .attr("id", "sf-map-image")
     .attr("width", width)
     .attr("height", height)
-    .attr("xlink:href", "data/sf-map.svg")
-    .on({
-      'click': function() {
-        var cx = window.event.clientX;
-        var cy = window.event.clientY;
-        var mouse_xy_within_img = getXY(window.event, 'sf-map-image');
-        //mouse_xy_within_img = [d3.event.x, d3.event.y];
-        //console.log(projection.invert(mouse_xy_within_img));
-        filterWithinCoords(projection.invert(mouse_xy_within_img)[0], projection.invert(mouse_xy_within_img)[1], 0.5, 'black');
-      }
-    });
+    .attr("xlink:href", "data/sf-map.svg");
+    // .on({
+    //   'click': function() {
+    //     var cx = window.event.clientX;
+    //     var cy = window.event.clientY;
+    //     var mouse_xy_within_img = getXY(window.event, 'sf-map-image');
+    //     //mouse_xy_within_img = [d3.event.x, d3.event.y];
+    //     //console.log(projection.invert(mouse_xy_within_img));
+    //     filterWithinCoords(projection.invert(mouse_xy_within_img)[0], projection.invert(mouse_xy_within_img)[1], 0.5, 'black');
+    //   }
+    // });
 
   svg.append("svg:g")
     .attr("class", "locations");
@@ -127,9 +128,6 @@ window.onload = function () {
         return d.IncidentNumber;
       })
       .attr("r", 2);
-
-
-      
 
   });
 
