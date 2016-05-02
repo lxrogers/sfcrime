@@ -115,7 +115,7 @@ function isTimeSelected(t) {
 		return t >= selectedTimes[0]  && t <= selectedTimes[1]	
 	}
 	else {
-		return t < selectedTimes[0]  || t > selectedTimes[1]
+		return t < selectedTimes[0]  || t >= selectedTimes[1]
 	}
 	
 }
