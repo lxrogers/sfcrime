@@ -15,6 +15,23 @@
   padding: 20px;
 }
 
+#summary-box {
+  position: absolute;
+  top: 90px;
+  left: 100px;
+  width: 160px;
+  height: 40px;
+  border: 2px solid grey;
+  border-radius: 4px;
+  background-color: rgba(255,255,255,0.75);
+  padding: 20px;
+}
+
+#num_data_points {
+  color: steelblue;
+  font-weight: bold;
+}
+
 .pin {
   cursor: pointer;
 }

@@ -11,6 +11,7 @@ var UNSELECTED_COLOR = "lightgrey"; // #FF8533
 
 // global vars
 var locations;
+var num_filtered_locations;
 var radius = 2.0; // in miles
 var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
@@ -21,7 +22,7 @@ var radius_leftover = [];
 function updateDynamicFilter() {
   locations.style("fill", UNSELECTED_COLOR);
   radius_leftover = [];
-  locations.filter(function(d) {
+  var filtered_locations = locations.filter(function(d) {
     // if (!filter_home && !filter_work) return false; // no filters so nothing is selected
     if (filter_home) {
       if (!filterWithinCoords(d, home_coords[0], home_coords[1])) return false;
@@ -35,8 +36,15 @@ function updateDynamicFilter() {
     return true;
   }).style("fill", SELECTED_COLOR);
 
+  num_filtered_locations = filtered_locations.size();
+  $("#num_data_points").text(num_filtered_locations);
+
   remakeDOW(radius_leftover);
   remakeTOD(radius_leftover);
+}
+
+function toSum() {
+  console.log(this.size());
 }
 
 function filterWithinCoords(d, center_x, center_y) {
