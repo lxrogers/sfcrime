@@ -17,6 +17,17 @@
       <div id="controls">
         <button onclick="javascript: filterWithinCoords(home_coords[0],home_coords[1],2,'blue');">Filter Home</button><br>
         <button onclick="javascript: filterWithinCoords(work_coords[0],work_coords[1],2,'brown');">Filter Work</button><br>
+        <button onclick="javascript: filterIntersection(2,2,'black');">Filter Intersection</button><br>
+        <div class="chart" id="DOW-hist"></div>
+        <div id="DOW-checkboxes">
+          <input id="Sunday-checkbox" class="DOW-checkbox" type="checkbox" name="Sunday" value="Sunday" /> S
+          <input id="Monday-checkbox" class="DOW-checkbox" type="checkbox" name="Monday" value="Monday" /> M
+          <input id="Tuesday-checkbox" class="DOW-checkbox" type="checkbox" name="Tuesday" value="Tuesday" /> T
+          <input id="Wednesday-checkbox" class="DOW-checkbox" type="checkbox" name="Wednesday" value="Sunday" /> W
+          <input id="Thursday-checkbox" class="DOW-checkbox" type="checkbox" name="Thursday" value="Monday" /> T
+          <input id="Friday-checkbox" class="DOW-checkbox" type="checkbox" name="Friday" value="Tuesday" /> F
+          <input id="Saturday-checkbox" class="DOW-checkbox" type="checkbox" name="Saturday" value="Tuesday" /> S
+        </div>
       </div>
     </div>
 

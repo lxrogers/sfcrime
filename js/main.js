@@ -18,7 +18,7 @@ var filter_home, filter_work = false;
 
 // global functions
 
-function dynamicFilter(datum) {
+function dynamicFilter() {
   locations.style("fill", UNSELECTED_COLOR);
   locations.filter(function(d) {
     if (filter_home) {
@@ -128,6 +128,9 @@ window.onload = function () {
         return d.IncidentNumber;
       })
       .attr("r", 2);
+
+
+      createDOW(incidents);
 
   });
 
