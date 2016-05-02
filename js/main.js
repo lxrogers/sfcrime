@@ -6,8 +6,8 @@ var HOME_ICON_HEIGHT = 20;
 var WORK_ICON_WIDTH = 20;
 var WORK_ICON_HEIGHT = 20;
 var LONGITUDINAL_DEGREES_PER_MILE = 0.01886792452;
-var SELECTED_COLOR = "steelblue";
-var UNSELECTED_COLOR = "lightgrey"; // #FF8533
+var SELECTED_COLOR = "rgb(70, 130, 180)"; // steelblue
+var UNSELECTED_COLOR = "rgb(211, 211, 211)"; // lightgrey
 
 // global vars
 var locations;
@@ -164,8 +164,14 @@ window.onload = function () {
         return d.IncidentNumber;
       })
       .attr("r", 2)
-      .style("fill", UNSELECTED_COLOR);
-
+      .style("fill", UNSELECTED_COLOR)
+      .on("mouseover", function(d) {
+        if (d3.select(this).style("fill") === SELECTED_COLOR) {
+          $("#selected_point_cat").text(d.Category);
+          $("#selected_point_desc").text(d.Description);
+          $("#selected_point_res").text(d.Resolution);
+        }
+      });
 
       createDOW(incidents);
       createTOD(incidents);
