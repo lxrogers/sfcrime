@@ -17,6 +17,8 @@ var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
 var filter_home, filter_work = false;
 var radius_leftover = [];
+var violent = true;
+var non_violent = false;
 // global functions
 
 function updateDynamicFilter() {
@@ -42,6 +44,13 @@ function updateDynamicFilter() {
   remakeDOW(radius_leftover);
   remakeTOD(radius_leftover);
 }
+
+function isViolentCrime(d) {
+  return d['Category'] == "ASSAULT" || d['Category']== "SEX OFFENSES, FORCIBLE";
+}
+
+function isNonViolentCrime(d) {
+  return !isViolentCrime(d);
 
 function toSum() {
   console.log(this.size());
