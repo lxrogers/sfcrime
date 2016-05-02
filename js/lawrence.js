@@ -1,5 +1,10 @@
 //var timesOfDay = [0,1,2,3,4,5,6,7,8,9,10, 11, 12, 13,14,15,16,17,18,19,20,21,22,23]
-var timesOfDay = [0,4,8,12,16,20,24, 28, 32, 36, 40, 44, 48];
+var timesOfDay = [];
+
+for (var i = 0; i < 24; i+= 2) {
+	timesOfDay.push(i);
+}
+
 var daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 var selectedDaysOfWeek = {
 	"Sunday" : true,
@@ -10,10 +15,11 @@ var selectedDaysOfWeek = {
 	"Friday" : true,
 	"Saturday" : true
 }
+
 var timesOfDayNames = {
 	0: "Midnight",
-	4: "3am",
-	8: "7am",
+	2: "3am",
+	4: "7am",
 	12: "11am",
 	16: "3pm",
 	20: "7pm",
@@ -24,7 +30,6 @@ var timesOfDayNames = {
 	40: "3pm",
 	44: "7pm",
 	48: "11pm"
-
 }
 
 function dayOfWeekHistogram(data) {
@@ -120,9 +125,9 @@ function createRadiusSlider() {
 	d3.select("#radius-slider")
 	.call(
 		d3.slider()
-			.scale(d3.scale.ordinal().domain([0,1,2,3,4,5]).rangePoints([0, 1], 0.5))
-			.axis(d3.svg.axis())
+			.axis(true).min(0).max(5)
 			.value(1)
+			.snap(false)
 			.on("slide", function(evt, value) {
 			  
 			})
