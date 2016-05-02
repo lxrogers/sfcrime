@@ -120,9 +120,18 @@ window.onload = function () {
       return (hours+minutes).toFixed(2);
     }
 
+    var types_of_crimes = {};
+
     for (incident of incidents) {
       incident.TimeNumeric = stringTimeToDouble(incident.Time);
+      if (incident.Category in types_of_crimes) {
+        types_of_crimes[incident.Category] += 1;
+      } else {
+        types_of_crimes[incident.Category] = 1;
+      }
     }
+
+    console.log(types_of_crimes);
 
     locations = d3.select(".locations").selectAll('circle')
       .data(incidents);
