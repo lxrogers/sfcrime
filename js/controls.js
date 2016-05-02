@@ -10,3 +10,9 @@ $('.location-checkbox').each(function() {
     updateDynamicFilter();
   });
 });
+
+$("input[name='time']").change(function() {
+	include = (this.value == "include");
+	console.log(include);
+	updateTOD();
+})
