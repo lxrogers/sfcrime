@@ -122,10 +122,12 @@ function createRadiusSlider() {
 	.call(
 		d3.slider()
 			.axis(true).min(0).max(5)
-			.value(1)
+			.value(2.0)
 			.snap(false)
 			.on("slide", function(evt, value) {
-			  
+			  radius = value.toFixed(1);
+			  $('.radius-text').text(radius);
+			  updateDynamicFilter();
 			})
 	);
 }

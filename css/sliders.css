@@ -1,11 +1,11 @@
 body {
 	width: 100%;
 }
+
 .chart {
 	height: 10px;
 	padding-top: 5%;
 	padding-bottom: 5%;
-
 }
 
 .chart div {
@@ -16,7 +16,10 @@ body {
 	margin: 1px;
 	color: white;
 	float: left;
-  
+}
+
+.d3-slider-axis-bottom {
+	height: 20px;
 }
 
 #TOD-slider {

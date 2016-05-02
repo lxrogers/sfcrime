@@ -17,9 +17,11 @@
       <div id="sf-map"></div>
       <div id="controls">
 
+        Radius: <div id="radius-slider" class="d3-slider d3-slider-horizontal"></div><br><br>
+
         <div id="location-checkboxes">
-          <input id="home-checkbox" class="location-checkbox" type="checkbox" name="Home" value="true" /> Filter to <span class="radius-text">radius</span> around HOME location?<br>
-          <input id="work-checkbox" class="location-checkbox" type="checkbox" name="Work" value="true" /> Filter to <span class="radius-text">radius</span> around WORK location?<br>
+          <input id="home-checkbox" class="location-checkbox" type="checkbox" name="Home" value="true" /> Filter to <span class="radius-text">2.0</span> miles around HOME location?<br>
+          <input id="work-checkbox" class="location-checkbox" type="checkbox" name="Work" value="true" /> Filter to <span class="radius-text">2.0</span> miles around WORK location?<br>
         </div>
 
         <div class="chart" id="DOW-hist"></div>
@@ -36,8 +38,6 @@
         <div class="chart" id="TOD-hist"></div>
         <div id="TOD-slider" class="d3-slider d3-slider-horizontal"></div><br/>
         Time Selected: <span id ="hourmin">11am </span> to <span id ="hourmax">11am </span><br/>
-        
-        <div id="radius-slider" class="d3-slider d3-slider-horizontal"></div><br/>
 
       </div>
     </div>

@@ -22,3 +22,14 @@
 circle {
    stroke-width: 0px;
 }
+
+/* from here: http://stackoverflow.com/questions/826782/css-rule-to-disable-text-selection-highlighting */
+.noselect, #controls {
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none;   /* Chrome/Safari/Opera */
+  -khtml-user-select: none;    /* Konqueror */
+  -moz-user-select: none;      /* Firefox */
+  -ms-user-select: none;       /* Internet Explorer/Edge */
+  user-select: none;           /* Non-prefixed version, currently
+                                  not supported by any browser */
+}

@@ -151,7 +151,7 @@ window.onload = function () {
       d3.event.sourceEvent.stopPropagation(); // silence other listeners
       d3.select(this).attr("x", d3.event.x - HOME_ICON_WIDTH/2);
       d3.select(this).attr("y", d3.event.y - HOME_ICON_HEIGHT/2);
-      home_coords = projection.invert([d3.event.x - HOME_ICON_WIDTH/2, d3.event.y - HOME_ICON_HEIGHT/2]);
+      home_coords = projection.invert([d3.event.x, d3.event.y]);
       updateDynamicFilter();
     }));
 
@@ -167,7 +167,7 @@ window.onload = function () {
       d3.event.sourceEvent.stopPropagation(); // silence other listeners
       d3.select(this).attr("x", d3.event.x - WORK_ICON_WIDTH/2);
       d3.select(this).attr("y", d3.event.y - WORK_ICON_HEIGHT/2);
-      work_coords = projection.invert([d3.event.x - WORK_ICON_WIDTH/2, d3.event.y - WORK_ICON_HEIGHT/2]);
+      work_coords = projection.invert([d3.event.x, d3.event.y]);
       updateDynamicFilter();
     }));
 
