@@ -201,7 +201,6 @@ function createDOW(incidents) {
 }
 
 function remakeDOW(incidents) {
-	console.log("remaking histogram")
 	var dayOfWeekHist_data = dayOfWeekHistogram(incidents);
 	d3.select("#DOW-hist")
 	.selectAll("div")

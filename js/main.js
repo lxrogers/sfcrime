@@ -17,7 +17,8 @@ var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
 var filter_home, filter_work = false;
 var radius_leftover = [];
-var violent, non_violent = true;
+var violent = true;
+var non_violent = true;
 
 // global functions
 
