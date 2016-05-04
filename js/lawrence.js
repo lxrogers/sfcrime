@@ -17,7 +17,7 @@ var selectedDaysOfWeek = {
 }
 
 var timesOfDayNames = {
-	0: "Midnight",
+	0: "12am",
 	2: "2am",
 	4: "4am",
 	6: "6am",
@@ -106,8 +106,6 @@ function timeOfDayHistogram(data) {
 	return counts_arr;
 }
 
-//var dayOfWeekHist_data = dayOfWeekHistogram(SCPDdata.data);
-//var timeOfDayHist_data = timeOfDayHistogram(SCPDdata.data);
 var selectedTimes = [];
 var include = true;
 
@@ -222,7 +220,7 @@ function isDaySelected(day) {
 function updateTOD() {
 	d3.select("#TOD-hist")
 		.selectAll("div")
-		.style("background-color", "grey");
+		.style("background-color", "lightgrey");
 
 	d3.select("#TOD-hist")
 		.selectAll("div")

@@ -132,19 +132,19 @@ window.onload = function () {
         || category == "ROBBERY";
     }
 
-    var types_of_crimes = {};
+    //var types_of_crimes = {};
 
     for (incident of incidents) {
       incident.TimeNumeric = stringTimeToDouble(incident.Time);
       incident.IsViolent = isViolentCrime(incident.Category) ? "true" : "false";
-      if (incident.Category in types_of_crimes) {
-        types_of_crimes[incident.Category] += 1;
-      } else {
-        types_of_crimes[incident.Category] = 1;
-      }
+      // if (incident.Category in types_of_crimes) {
+      //   types_of_crimes[incident.Category] += 1;
+      // } else {
+      //   types_of_crimes[incident.Category] = 1;
+      // }
     }
 
-    console.log(types_of_crimes);
+    //console.log(types_of_crimes);
 
     locations = d3.select(".locations").selectAll('circle')
       .data(incidents);
@@ -175,6 +175,8 @@ window.onload = function () {
           $("#selected_point_res").text(d.Resolution);
         }
       });
+
+      locations.filter(function(d) { return true; }).style("fill", SELECTED_COLOR);
 
       createDOW(incidents);
       createTOD(incidents);
