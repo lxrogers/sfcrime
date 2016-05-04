@@ -25,11 +25,12 @@
       </div>
       <div id="controls">
 
-        Radius (in miles): <div id="radius-slider" class="d3-slider d3-slider-horizontal"></div><br><br>
+        Radius around Home (in miles): <div id="radius-home-slider" value="home" class="d3-slider d3-slider-horizontal"></div><br><br>
+        Radius around Work (in miles): <div id="radius-work-slider" value="work" class="d3-slider d3-slider-horizontal"></div><br><br>
 
         <div id="location-checkboxes">
-          <input id="home-checkbox" class="location-checkbox" type="checkbox" name="Home" value="true" /> Filter to <span class="radius-text">2.0</span> miles around HOME location?<br>
-          <input id="work-checkbox" class="location-checkbox" type="checkbox" name="Work" value="true" /> Filter to <span class="radius-text">2.0</span> miles around WORK location?<br>
+          <input id="home-checkbox" class="location-checkbox" type="checkbox" name="Home" value="true" /> Filter to <span class="radius-home-text">2.0</span> miles around HOME location?<br>
+          <input id="work-checkbox" class="location-checkbox" type="checkbox" name="Work" value="true" /> Filter to <span class="radius-work-text">2.0</span> miles around WORK location?<br>
         </div>
 
         <div class="chart" id="DOW-hist"></div><br>

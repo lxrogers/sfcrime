@@ -120,16 +120,16 @@ function isTimeSelected(t) {
 	}
 }
 
-function createRadiusSlider() {
-	d3.select("#radius-slider")
+function createRadiusSlider(location) {
+	d3.select("#radius-" + location + "-slider")
 	.call(
 		d3.slider()
 			.axis(true).min(0).max(5)
-			.value(2.0)
+			.value(radii[location].toString())
 			.snap(false)
 			.on("slide", function(evt, value) {
-			  radius = value.toFixed(1);
-			  $('.radius-text').text(radius);
+			  radii[location] = value.toFixed(1);
+			  $(".radius-" + location + "-text").text(radii[location]);
 			  updateDynamicFilter();
 			})
 	);
@@ -145,8 +145,7 @@ function createTOD(incidents) {
 		.style("margin-top", function(d) {return (1 - d.norm) * BAR_HEIGHT_MULTIPLIER + "px"})
     	.text(function(d) { return d.count; });
 
-
-    d3.select("#TOD-slider")
+  d3.select("#TOD-slider")
 	.call(
 		d3.slider()
 			.scale(d3.scale.ordinal().domain(timesOfDay).rangePoints([0, 1], 0.5))

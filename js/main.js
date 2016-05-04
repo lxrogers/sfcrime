@@ -12,7 +12,10 @@ var UNSELECTED_COLOR = "rgb(211, 211, 211)"; // lightgrey
 // global vars
 var locations;
 var num_filtered_locations;
-var radius = 2.0; // in miles
+var radii = {
+  "home" : 2.0, // default, in miles
+  "work" : 1.0
+}
 var home_coords = [-122.458220811697, 37.7633123961354]; // at start
 var work_coords = [-122.407257559322, 37.769769551921]; // at start
 var filter_home, filter_work = false;
@@ -28,10 +31,10 @@ function updateDynamicFilter() {
   var filtered_locations = locations.filter(function(d) {
     // if (!filter_home && !filter_work) return false; // no filters so nothing is selected
     if (filter_home) {
-      if (!filterWithinCoords(d, home_coords[0], home_coords[1])) return false;
+      if (!filterWithinCoords(d, home_coords[0], home_coords[1], radii.home)) return false;
     }
     if (filter_work) {
-      if (!filterWithinCoords(d, work_coords[0], work_coords[1])) return false;
+      if (!filterWithinCoords(d, work_coords[0], work_coords[1], radii.work)) return false;
     }
     if (!violent && d.IsViolent === "true") return false;
     if (!non_violent && d.IsViolent === "false") return false;
@@ -48,7 +51,7 @@ function updateDynamicFilter() {
   remakeTOD(radius_leftover);
 }
 
-function filterWithinCoords(d, center_x, center_y) {
+function filterWithinCoords(d, center_x, center_y, radius) {
   return ( Math.pow((d.Location[0] - center_x), 2) + Math.pow((d.Location[1] - center_y), 2) < Math.pow(radius * LONGITUDINAL_DEGREES_PER_MILE, 2) );
 }
 
@@ -175,7 +178,8 @@ window.onload = function () {
 
       createDOW(incidents);
       createTOD(incidents);
-      createRadiusSlider();
+      createRadiusSlider("home");
+      createRadiusSlider("work");
 
   });
 
